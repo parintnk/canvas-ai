@@ -96,54 +96,43 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-sky-50/20 to-white">
+    <div className="flex flex-col justify-between min-h-screen">
       {/* Header */}
-      <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-blue-200/30 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-sky-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-sm">
-              <span className="text-white text-xl">✨</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-slate-800">Canvas Marketing</h1>
-              <p className="text-xs text-slate-500">เพื่อนคู่คิดด้าน Marketing ของคุณ</p>
+      <div className="sticky top-0 left-0 right-0 paper-texture border-b-2 border-dashed" style={{ borderColor: 'var(--line-color)', zIndex: 10 }}>
+        <div className="max-w-4xl mx-auto px-20 py-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full border-2" style={{ borderColor: 'var(--shadow-color)', backgroundColor: 'var(--paper-color)' }} />
+            <div className="handwriting">
+              <h1 className="text-2xl font-bold" style={{ color: 'var(--foreground)' }}>Canvas Marketing</h1>
+              <p className="text-sm opacity-75">เพื่อนคู่คิดด้าน Marketing ของคุณ</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="max-w-4xl mx-auto px-4 pt-24 pb-32">
-        <div className="space-y-6">
+      <div className="max-w-4xl mx-auto px-20 pt-32 pb-40">
+        <div className="space-y-8">
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex gap-3 ${
-                message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+              className={`relative ${
+                message.role === 'user' ? 'text-right' : 'text-left'
               }`}
             >
-              {/* Avatar */}
-              <div
-                className={`w-8 h-8 rounded-2xl flex-shrink-0 flex items-center justify-center shadow-sm ${
-                  message.role === 'user'
-                    ? 'bg-gradient-to-br from-blue-500 to-indigo-500'
-                    : 'bg-gradient-to-br from-sky-400 to-blue-500'
-                }`}
-              >
-                <span className="text-white text-sm">
-                  {message.role === 'user' ? '👤' : '✨'}
-                </span>
-              </div>
-
-              {/* Message bubble */}
-              <div
-                className={`max-w-[75%] rounded-3xl px-5 py-3 shadow-sm ${
-                  message.role === 'user'
-                    ? 'bg-gradient-to-br from-blue-500 to-indigo-500 text-white'
-                    : 'bg-white/90 text-slate-800 border border-blue-200/30'
-                }`}
-              >
-                <p className="text-[15px] leading-relaxed whitespace-pre-wrap">
+              {/* Hole punches */}
+              <div className="hole-punch" style={{ top: `${80 + index * 120}px` }} />
+              
+              {/* Message */}
+              <div className={`inline-block max-w-[80%] p-4 handwriting ${
+                message.role === 'user' 
+                  ? 'bg-yellow-100 border-l-4 border-yellow-600 ml-auto' 
+                  : 'bg-blue-50 border-l-4 border-blue-400'
+              }`} style={{ boxShadow: '2px 2px 8px rgba(139, 115, 85, 0.1)' }}>
+                <div className="text-xs font-semibold mb-2 opacity-60">
+                  {message.role === 'user' ? 'คุณ' : 'Canvas'}
+                </div>
+                <p className="whitespace-pre-wrap" style={{ color: 'var(--foreground)' }}>
                   {message.content}
                 </p>
               </div>
@@ -151,15 +140,14 @@ export default function Home() {
           ))}
 
           {isLoading && (
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-2xl flex-shrink-0 bg-gradient-to-br from-sky-400 to-blue-500 flex items-center justify-center shadow-sm">
-                <span className="text-white text-sm">✨</span>
-              </div>
-              <div className="bg-white/90 rounded-3xl px-5 py-3 shadow-sm border border-blue-200/30">
-                <div className="flex gap-1.5">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+            <div className="relative text-left">
+              <div className="hole-punch" style={{ top: `${80 + messages.length * 120}px` }} />
+              <div className="inline-block max-w-[80%] p-4 bg-blue-50 border-l-4 border-blue-400 handwriting" style={{ boxShadow: '2px 2px 8px rgba(139, 115, 85, 0.1)' }}>
+                <div className="text-xs font-semibold mb-2 opacity-60">Canvas</div>
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--shadow-color)', animation: 'bounce 1.4s infinite' }}></div>
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--shadow-color)', animation: 'bounce 1.4s infinite 0.2s' }}></div>
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--shadow-color)', animation: 'bounce 1.4s infinite 0.4s' }}></div>
                 </div>
               </div>
             </div>
@@ -170,39 +158,44 @@ export default function Home() {
       </div>
 
       {/* Input */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/95 to-transparent backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <form onSubmit={sendMessage} className="relative">
+      <div className="fixed bottom-0 left-0 right-0 paper-texture border-t-2 border-dashed" style={{ borderColor: 'var(--line-color)' }}>
+        <div className="max-w-4xl mx-auto px-20 py-6">
+          <form onSubmit={sendMessage} className="relative flex items-center gap-3">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="พิมพ์ข้อความ..."
               disabled={isLoading}
-              className="w-full px-6 py-4 pr-14 rounded-full bg-white border border-blue-200/50 shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-400/50 focus:border-sky-400 text-slate-800 placeholder-slate-400 disabled:opacity-50 transition-all"
+              className="flex-1 px-6 py-4 handwriting text-lg bg-transparent border-0 outline-none placeholder-opacity-50"
+              style={{
+                color: 'var(--foreground)',
+                borderBottom: '2px dashed var(--line-color)',
+                backgroundColor: 'transparent'
+              }}
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-br from-sky-400 to-blue-500 rounded-full flex items-center justify-center text-white shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
+              className="w-12 h-12 rounded-full border-2 hover:scale-110 transition-transform disabled:opacity-30 flex items-center justify-center font-bold text-xl shadow-md flex-shrink-0"
+              style={{
+                borderColor: '#8B7355',
+                backgroundColor: '#F5E6D3',
+                color: '#8B7355'
+              }}
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
-              </svg>
+              ➤
             </button>
           </form>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes bounce {
+          0%, 80%, 100% { transform: scale(0); }
+          40% { transform: scale(1); }
+        }
+      `}</style>
     </div>
   );
 }
